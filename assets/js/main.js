@@ -1,9 +1,23 @@
 //p 0 ``
-const offset = 0;
-const limit = 10;
-const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
 
-fetch(url)
-  .then((res) => res.json())
-  .then((jsonBody) => console.log(jsonBody))
-  .catch((error) => console.log(error))
+function pokemonToHtml(pokemon) {
+  return `<li class="pokemon ${pokemon.type} ">
+    <span class="number">#${pokemon.id} </span>
+    <span class="name">${pokemon.name}</span>
+    
+    <div class="detail">
+      <ol class="types">
+        ${pokemon.types.map((type) => `<li class"type ${type}">${type}</li>`).join('')}
+      </ol>
+
+      <img src="${pokemon.photo}" alt="${pokemon.name}" />
+    </div>
+
+  </li>`;
+}
+
+const pokemonList = document.querySelector("#pokemonsList");
+
+pokeApi.getpokemons().then((pokemons = []) => {
+  pokemonList.innerHTML += pokemons.map(pokemonToHtml).join("");
+});
