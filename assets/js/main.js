@@ -1,6 +1,8 @@
 //p 0 ``
 const pokemonList = document.querySelector("#pokemonsList");
 const loadMore = document.querySelector("#loadMoreButton");
+
+const maxRecords = 151;
 const limit = 10;
 let offset = 0;
 
@@ -23,7 +25,8 @@ function loadPokemonItens(offset, limit) {
                 <img src="${pokemon.photo}" alt="${pokemon.name}" />
             </div>
         </li>`
-      ).join("");
+      )
+      .join("");
     pokemonList.innerHTML += newHtml;
   });
 }
@@ -31,5 +34,14 @@ function loadPokemonItens(offset, limit) {
 loadPokemonItens(offset, limit);
 
 loadMore.addEventListener("click", () => {
-    loadPokemonItens()
+  offset += limit;
+  const qtdRecordsWithNexPage = offset + limit;
+
+  if (qtdRecordsWithNexPage >= maxRecords) {
+    const newLimit = maxRecords - offset;
+    loadPokemonItens(offset, limit);
+    loadMore.parentElement.removeChild(loadMore);
+  } else {
+    loadPokemonItens(offset, limit);
+  }
 });
